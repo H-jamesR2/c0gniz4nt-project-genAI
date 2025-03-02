@@ -6,6 +6,8 @@ Choose program:\n
 1 - Number Guessing\n
 2 - Password Strength Checker\n
 3 - Implementing Your Own Data Structures \n
+4 - Menu Functioning\n
+5 - Exception Handling (Calculator)\n
 999 - to quit.
 Program choice: 
 """
@@ -350,5 +352,74 @@ elif program_choice == 4:
         elif choice_ == 4:
             print("Exiting Recursion Program")
             pass
+
+elif program_choice == 5:
+    import logging
+
+    # Configure logging
+    logging.basicConfig(filename='error_log.txt', level=logging.ERROR,
+                        format='%(asctime)s - %(levelname)s - %(message)s')
+
+    def get_number(prompt):
+        while True:
+            try:
+                return float(input(prompt))
+            except ValueError:
+                print("Invalid input! Please enter a valid number.")
+                logging.error("ValueError: Invalid number input")
+
+    def add(a, b):
+        return a + b
+
+    def subtract(a, b):
+        return a - b
+
+    def multiply(a, b):
+        return a * b
+
+    def divide(a, b):
+        try:
+            return a / b
+        except ZeroDivisionError:
+            print("Oops! Division by zero is not allowed.")
+            logging.error("ZeroDivisionError: Division by zero attempted")
+            return None
+
+    def main():
+        while True:
+            print("\nWelcome to the Error-Free Calculator!")
+            print("Choose an operation:")
+            print("1. Addition")
+            print("2. Subtraction")
+            print("3. Multiplication")
+            print("4. Division")
+            print("5. Exit")
+            
+            choice = input("> ")
+            
+            if choice == '5':
+                print("Goodbye!")
+                break
+            
+            if choice not in ('1', '2', '3', '4'):
+                print("Invalid choice! Please select a valid option.")
+                continue
+            
+            num1 = get_number("Enter the first number: ")
+            num2 = get_number("Enter the second number: ")
+            
+            if choice == '1':
+                print("Result:", add(num1, num2))
+            elif choice == '2':
+                print("Result:", subtract(num1, num2))
+            elif choice == '3':
+                print("Result:", multiply(num1, num2))
+            elif choice == '4':
+                result = divide(num1, num2)
+                if result is not None:
+                    print("Result:", result)
+
+    if __name__ == "__main__":
+        main()
 
 print("program_end")
