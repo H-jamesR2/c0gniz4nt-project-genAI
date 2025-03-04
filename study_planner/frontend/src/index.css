@@ -1,3 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Optional: Add custom global styles here if absolutely necessary */
+
+/* Example: Custom scrollbar styles (if needed) */
+/*
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #646cff;
+  border-radius: 4px;
+}
+*/
+
+/* Example: Custom container styles (if needed) */
+/*
+.container {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+*/
+
+
+
+/*
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -67,3 +103,4 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+*/
