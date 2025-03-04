@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request
 from db.session import engine, Base
 from app.routes import task_routes
 from app.models.task import Task  # Import Task model to trigger table creation
+from fastapi.middleware.cors import CORSMiddleware
 import logging
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
@@ -19,6 +20,15 @@ except Exception as e:
 
 
 app = FastAPI(title="Study Planner API")
+
+# Allow frontend access
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],  # Vite frontend
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allow all headers
+)
 
 # Include Routes
 app.include_router(task_routes.router)
