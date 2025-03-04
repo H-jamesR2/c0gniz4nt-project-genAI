@@ -2,12 +2,14 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import TaskManager from './pages/TaskManager'; // Adjust the path if necessary
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
+      
       <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
@@ -17,9 +19,8 @@ function App() {
         </a>
       </div>
 
-      <div className="flex min-h-screen items-center justify-center bg-gray-900 text-white">
-        <h1 className="text-4xl font-bold">Tailwind is Working! 🚀</h1>
-      </div>
+      <TaskManager />
+      
 
       <h1>Vite + React</h1>
       <div className="card">
@@ -38,3 +39,10 @@ function App() {
 }
 
 export default App
+/*
+      <div className="flex min-h-screen items-center justify-center bg-gray-900 text-white">
+        
+        <h1 className="text-4xl font-bold">Tailwind is Working! 🚀</h1>
+      </div>
+
+*/

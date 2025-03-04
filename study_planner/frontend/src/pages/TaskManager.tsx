@@ -1,120 +1,58 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { FaSortAmountUp, FaSortAmountDown, FaTasks } from "react-icons/fa";
 
-type Task = {
+interface Task {
     id: string;
     title: string;
     description: string;
-    dueDate: string;
-    priority: "low" | "medium" | "high";
+    due_date: string;
+    priority: number;
     completed: boolean;
-};
+}
 
 export default function TaskManager() {
     const [tasks, setTasks] = useState<Task[]>([]);
-    const [selectedTasks, setSelectedTasks] = useState<Set<string>>(new Set());
+    const [sortBy, setSortBy] = useState<"deadline" | "priority" | null>(null);
 
-    const toggleSelectTask = (id: string) => {
-        setSelectedTasks((prev) => {
-            const newSet = new Set(prev);
-            newSet.has(id) ? newSet.delete(id) : newSet.add(id);
-            return newSet;
-        });
-    };
+    useEffect(() => {
+        fetch("http://localhost:8000/tasks")
+            .then((res) => res.json())
+            .then((data) => setTasks(data));
+    }, []);
 
-    return (
-        <div className="p-6 max-w-4xl mx-auto">
-            <h1 className="text-2xl font-bold mb-4">Task Manager</h1>
-            <TaskInputForm setTasks={setTasks} />
-            <TaskList tasks={tasks} toggleSelectTask={toggleSelectTask} selectedTasks={selectedTasks} />
-        </div>
-    );
-}
-
-function TaskInputForm({ setTasks }: { setTasks: React.Dispatch<React.SetStateAction<Task[]>> }) {
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [dueDate, setDueDate] = useState("");
-    const [priority, setPriority] = useState<"low" | "medium" | "high">("medium");
-
-    const addTask = () => {
-        if (!title.trim()) return;
-        const newTask: Task = {
-            id: crypto.randomUUID(),
-            title,
-            description,
-            dueDate,
-            priority,
-            completed: false,
-        };
-        setTasks((prev) => [...prev, newTask]);
-        setTitle("");
-        setDescription("");
-        setDueDate("");
-    };
+    const sortedTasks = [...tasks].sort((a, b) => {
+        if (sortBy === "deadline") {
+            return new Date(a.due_date).getTime() - new Date(b.due_date).getTime();
+        }
+        if (sortBy === "priority") {
+            return b.priority - a.priority;
+        }
+        return 0;
+    });
 
     return (
-        <div className="mb-4 p-4 border rounded-lg bg-gray-100">
-            <input
-                type="text"
-                placeholder="Task Title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                className="p-2 border rounded w-full mb-2"
-            />
-            <textarea
-                placeholder="Description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="p-2 border rounded w-full mb-2"
-            ></textarea>
-            <input
-                type="date"
-                value={dueDate}
-                onChange={(e) => setDueDate(e.target.value)}
-                className="p-2 border rounded w-full mb-2"
-            />
-            <select
-                value={priority}
-                onChange={(e) => setPriority(e.target.value as "low" | "medium" | "high")}
-                className="p-2 border rounded w-full mb-2"
-            >
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
-            </select>
-            <button onClick={addTask} className="bg-blue-500 text-white p-2 rounded w-full">
-                Add Task
-            </button>
-        </div>
-    );
-}
+        <div className="p-4">
+            {/* Navbar */}
+            <nav className="flex items-center space-x-4 mb-4">
+                <button className="text-xl" onClick={() => setSortBy("deadline")}>
+                    <FaSortAmountUp className="inline mr-2" /> Sort by Deadline
+                </button>
+                <button className="text-xl" onClick={() => setSortBy("priority")}>
+                    <FaSortAmountDown className="inline mr-2" /> Sort by Priority
+                </button>
+            </nav>
 
-function TaskList({
-    tasks,
-    toggleSelectTask,
-    selectedTasks,
-}: {
-    tasks: Task[];
-    toggleSelectTask: (id: string) => void;
-    selectedTasks: Set<string>;
-}) {
-    return (
-        <ul className="space-y-2">
-            {tasks.map((task) => (
-                <li key={task.id} className="flex items-center justify-between p-4 border rounded-lg bg-white">
-                    <input
-                        type="checkbox"
-                        checked={selectedTasks.has(task.id)}
-                        onChange={() => toggleSelectTask(task.id)}
-                        className="mr-2"
-                    />
-                    <div>
-                        <h2 className="text-lg font-semibold">{task.title}</h2>
-                        <p className="text-sm text-gray-600">{task.description}</p>
-                        <p className="text-xs text-gray-500">Due: {task.dueDate} | Priority: {task.priority}</p>
+            {/* Task List */}
+            <div className="grid gap-4">
+                {sortedTasks.map((task) => (
+                    <div key={task.id} className="p-4 border rounded shadow">
+                        <h3 className="text-lg font-bold">{task.title}</h3>
+                        <p>{task.description}</p>
+                        <p>Due: {new Date(task.due_date).toLocaleDateString()}</p>
+                        <p>Priority: {task.priority}</p>
                     </div>
-                </li>
-            ))}
-        </ul>
+                ))}
+            </div>
+        </div>
     );
 }
