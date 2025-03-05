@@ -1,48 +1,36 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import TaskManager from './pages/TaskManager'; // Adjust the path if necessary
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { FaHome, FaTasks, FaChartBar } from "react-icons/fa"; // Icons for TaskManager and scoreApplication
+import TaskManager from "./pages/TaskManager";
+import Home from "./pages/Home"; // We'll create this
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
+    <Router>
+      <div className="flex min-h-screen">
+        {/* Vertical Toolbar (Top-Left) */}
+        <nav className="fixed top-0 left-0 h-full w-16 bg-gray-800 flex flex-col items-center py-4 space-y-6">
+          <Link to="/" className="text-white hover:text-blue-300" title="Home">
+            <FaHome size={30} /> {/* Placeholder for Home or scoreApplication */}
+          </Link>
+          <Link to="/tasks" className="text-white hover:text-blue-300" title="Task Manager">
+            <FaTasks size={30} /> {/* TaskManager Icon */}
+          </Link>
+          <Link to="/" className="text-white hover:text-blue-300" title="Score Tracker">
+            <FaChartBar size={30} /> {/* Placeholder for Home or scoreApplication */}
+          </Link>
+        </nav>
 
-      <TaskManager />
-      
-
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+        {/* Main Content */}
+        <div className="flex-1 p-4">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/tasks" element={<TaskManager />} />
+          </Routes>
+        </div>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </Router>
+  );
 }
 
-export default App
-/*
-      <div className="flex min-h-screen items-center justify-center bg-gray-900 text-white">
-        
-        <h1 className="text-4xl font-bold">Tailwind is Working! 🚀</h1>
-      </div>
-
-*/
+export default App;
