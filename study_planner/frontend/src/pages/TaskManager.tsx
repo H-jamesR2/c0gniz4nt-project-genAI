@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import axios from "axios";
-import { Button } from "@/components/ui/button"; // Assuming shadcn/ui is set up
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -24,6 +24,7 @@ const TaskManager: React.FC = () => {
         due_date: "",
         priority: 1,
     });
+    const formRef = useRef<HTMLDivElement>(null); // Ref to track the form container
 
     useEffect(() => {
         fetchTasks();
@@ -74,14 +75,12 @@ const TaskManager: React.FC = () => {
 
         try {
             if (selectedTask) {
-                // PUT request for editing
                 const response = await axios.put(
                     `http://127.0.0.1:8000/tasks/${selectedTask.id}`,
                     formData
                 );
                 setTasks(tasks.map((task) => (task.id === selectedTask.id ? response.data : task)));
             } else {
-                // POST request for adding
                 const response = await axios.post("http://127.0.0.1:8000/tasks/", formData);
                 setTasks([...tasks, response.data]);
             }
@@ -90,6 +89,14 @@ const TaskManager: React.FC = () => {
             setFormData({ title: "", description: "", due_date: "", priority: 1 });
         } catch (error) {
             console.error("Error submitting task:", error);
+        }
+    };
+
+    const handleOutsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (formRef.current && !formRef.current.contains(e.target as Node)) {
+            setShowForm(false);
+            setSelectedTask(null);
+            setFormData({ title: "", description: "", due_date: "", priority: 1 });
         }
     };
 
@@ -160,50 +167,58 @@ const TaskManager: React.FC = () => {
                 +
             </Button>
             {showForm && (
-                <div className="absolute top-0 left-0 w-full h-full bg-white p-4 shadow-lg">
-                    <h2 className="text-xl font-bold mb-2">
-                        {selectedTask ? "Edit Task" : "New Task"}
-                    </h2>
-                    <Input
-                        name="title"
-                        placeholder="Title"
-                        value={formData.title}
-                        onChange={handleInputChange}
-                        className="mb-2"
-                    />
-                    <Textarea
-                        name="description"
-                        placeholder="Description"
-                        value={formData.description}
-                        onChange={handleInputChange}
-                        className="mb-2"
-                    />
-                    <Input
-                        name="due_date"
-                        type="date"
-                        value={formData.due_date.split("T")[0]} // Adjust for date input
-                        onChange={handleInputChange}
-                        className="mb-2"
-                    />
-                    <Input
-                        name="priority"
-                        type="number"
-                        min="1"
-                        max="3"
-                        value={formData.priority}
-                        onChange={handleInputChange}
-                        className="mb-2"
-                    />
-                    <div className="flex gap-2">
-                        <Button onClick={handleSubmit}>
-                            {selectedTask ? "Update" : "Create"}
-                        </Button>
-                        <Button
-                            variant="secondary"
-                            onClick={() => setShowForm(false)}
-                        >
-                            Cancel
-                        </Button>
+                <div
+                    className="absolute top-0 left-0 w-full h-full bg-gray-600 bg-opacity-50 flex items-center justify-center"
+                    onClick={handleOutsideClick}
+                >
+                    <div
+                        ref={formRef}
+                        className="bg-white p-4 shadow-lg rounded-md w-full max-w-md"
+                    >
+                        <h2 className="text-xl font-bold mb-2">
+                            {selectedTask ? "Edit Task" : "New Task"}
+                        </h2>
+                        <Input
+                            name="title"
+                            placeholder="Title"
+                            value={formData.title}
+                            onChange={handleInputChange}
+                            className="mb-2"
+                        />
+                        <Textarea
+                            name="description"
+                            placeholder="Description"
+                            value={formData.description}
+                            onChange={handleInputChange}
+                            className="mb-2"
+                        />
+                        <Input
+                            name="due_date"
+                            type="date"
+                            value={formData.due_date.split("T")[0]}
+                            onChange={handleInputChange}
+                            className="mb-2"
+                        />
+                        <Input
+                            name="priority"
+                            type="number"
+                            min="1"
+                            max="3"
+                            value={formData.priority}
+                            onChange={handleInputChange}
+                            className="mb-2"
+                        />
+                        <div className="flex gap-2">
+                            <Button onClick={handleSubmit}>
+                                {selectedTask ? "Update" : "Create"}
+                            </Button>
+                            <Button
+                                variant="secondary"
+                                onClick={() => setShowForm(false)}
+                            >
+                                Cancel
+                            </Button>
+                        </div>
                     </div>
                 </div>
             )}
