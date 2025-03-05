@@ -4,6 +4,8 @@ import TaskManager from "./pages/TaskManager";
 import Home from "./pages/Home"; // We'll create this
 import "./App.css";
 
+const icon_size = 24;
+
 function App() {
   return (
     <Router>
@@ -11,13 +13,13 @@ function App() {
         {/* Vertical Toolbar (Top-Left) */}
         <nav className="fixed top-0 left-0 h-full w-16 bg-gray-800 flex flex-col items-center py-4 space-y-6">
           <Link to="/" className="text-white hover:text-blue-300" title="Home">
-            <FaHome size={30} /> {/* Placeholder for Home or scoreApplication */}
+            <FaHome size={icon_size} /> {/* Placeholder for Home or scoreApplication */}
           </Link>
           <Link to="/tasks" className="text-white hover:text-blue-300" title="Task Manager">
-            <FaTasks size={30} /> {/* TaskManager Icon */}
+            <FaTasks size={icon_size} /> {/* TaskManager Icon */}
           </Link>
           <Link to="/" className="text-white hover:text-blue-300" title="Score Tracker">
-            <FaChartBar size={30} /> {/* Placeholder for Home or scoreApplication */}
+            <FaChartBar size={icon_size} /> {/* Placeholder for Home or scoreApplication */}
           </Link>
         </nav>
 
