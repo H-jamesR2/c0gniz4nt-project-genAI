@@ -3,6 +3,7 @@ import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { FaSortUp, FaSortDown, FaTrash } from "react-icons/fa"; // FontAwesome icons
 
 interface Task {
     id: string;
@@ -15,7 +16,8 @@ interface Task {
 
 const TaskManager: React.FC = () => {
     const [tasks, setTasks] = useState<Task[]>([]);
-    const [sortBy, setSortBy] = useState<string>("deadline");
+    const [sortBy, setSortBy] = useState<"deadline" | "priority">("deadline");
+    const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
     const [showForm, setShowForm] = useState<boolean>(false);
     const [selectedTask, setSelectedTask] = useState<Task | null>(null);
     const [formData, setFormData] = useState({
@@ -24,7 +26,8 @@ const TaskManager: React.FC = () => {
         due_date: "",
         priority: 1,
     });
-    const formRef = useRef<HTMLDivElement>(null); // Ref to track the form container
+    const [selectedTaskIds, setSelectedTaskIds] = useState<string[]>([]);
+    const formRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         fetchTasks();
@@ -39,12 +42,25 @@ const TaskManager: React.FC = () => {
         }
     };
 
+    // removed delete button on every box to settle for select -> delete.
+    /*
     const handleDelete = async (id: string) => {
         try {
             await axios.delete(`http://127.0.0.1:8000/tasks/${id}`);
             setTasks(tasks.filter((task) => task.id !== id));
+            setSelectedTaskIds(selectedTaskIds.filter((taskId) => taskId !== id));
         } catch (error) {
             console.error("Error deleting task:", error);
+        }
+    }; */
+
+    const handleMultiDelete = async () => {
+        try {
+            await Promise.all(selectedTaskIds.map((id) => axios.delete(`http://127.0.0.1:8000/tasks/${id}`)));
+            setTasks(tasks.filter((task) => !selectedTaskIds.includes(task.id)));
+            setSelectedTaskIds([]);
+        } catch (error) {
+            console.error("Error deleting multiple tasks:", error);
         }
     };
 
@@ -100,59 +116,85 @@ const TaskManager: React.FC = () => {
         }
     };
 
+    const toggleSort = (newSortBy: "deadline" | "priority") => {
+        if (sortBy === newSortBy) {
+            setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+        } else {
+            setSortBy(newSortBy);
+            setSortDirection("asc");
+        }
+    };
+
     const sortedTasks = useMemo(() => {
         return [...tasks].sort((a, b) => {
             if (sortBy === "deadline") {
-                return new Date(a.due_date).getTime() - new Date(b.due_date).getTime();
+                const diff = new Date(a.due_date).getTime() - new Date(b.due_date).getTime();
+                return sortDirection === "asc" ? diff : -diff;
             } else if (sortBy === "priority") {
-                return b.priority - a.priority;
+                const diff = b.priority - a.priority;
+                return sortDirection === "asc" ? diff : -diff;
             }
             return 0;
         });
-    }, [tasks, sortBy]);
+    }, [tasks, sortBy, sortDirection]);
+
+    const handleCheckboxChange = (id: string) => {
+        setSelectedTaskIds((prev) =>
+            prev.includes(id) ? prev.filter((taskId) => taskId !== id) : [...prev, id]
+        );
+    };
 
     return (
         <div className="p-4 relative">
             <h1 className="text-2xl font-bold mb-4">Task Manager</h1>
             <div className="flex gap-4 mb-4">
                 <Button
-                    className="bg-blue-500 hover:bg-blue-600"
-                    onClick={() => setSortBy("deadline")}
+                    className="bg-blue-500 hover:bg-blue-600 flex items-center gap-2"
+                    onClick={() => toggleSort("deadline")}
                 >
                     Sort by Deadline
+                    {sortBy === "deadline" && (sortDirection === "asc" ? <FaSortUp /> : <FaSortDown />)}
                 </Button>
                 <Button
-                    className="bg-green-500 hover:bg-green-600"
-                    onClick={() => setSortBy("priority")}
+                    className="bg-green-500 hover:bg-green-600 flex items-center gap-2"
+                    onClick={() => toggleSort("priority")}
                 >
                     Sort by Priority
+                    {sortBy === "priority" && (sortDirection === "asc" ? <FaSortUp /> : <FaSortDown />)}
                 </Button>
+                {selectedTaskIds.length > 0 && (
+                    <Button
+                        variant="destructive"
+                        className="flex items-center gap-2"
+                        onClick={handleMultiDelete}
+                    >
+                        Delete Selected <FaTrash />
+                    </Button>
+                )}
             </div>
             <ul>
                 {sortedTasks.map((task) => (
                     <li
                         key={task.id}
-                        className="p-2 border-b cursor-pointer hover:bg-gray-100"
+                        className="p-2 border-b cursor-pointer hover:bg-gray-100 flex items-center gap-2"
                         onClick={() => handleTaskClick(task)}
                     >
-                        <h2 className="text-lg font-semibold">{task.title}</h2>
-                        <p>
-                            {task.description.length > 50
-                                ? task.description.substring(0, 50) + "..."
-                                : task.description}
-                        </p>
-                        <p className="text-sm text-gray-500">Due: {task.due_date}</p>
-                        <p className="text-sm text-gray-700">Priority: {task.priority}</p>
-                        <Button
-                            variant="destructive"
-                            className="mt-2"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                handleDelete(task.id);
-                            }}
-                        >
-                            Delete
-                        </Button>
+                        <input
+                            type="checkbox"
+                            checked={selectedTaskIds.includes(task.id)}
+                            onChange={() => handleCheckboxChange(task.id)}
+                            onClick={(e) => e.stopPropagation()} // Prevent task click
+                        />
+                        <div className="flex-1">
+                            <h2 className="text-lg font-semibold">{task.title}</h2>
+                            <p>
+                                {task.description.length > 50
+                                    ? task.description.substring(0, 50) + "..."
+                                    : task.description}
+                            </p>
+                            <p className="text-sm text-gray-500">Due: {task.due_date}</p>
+                            <p className="text-sm text-gray-700">Priority: {task.priority}</p>
+                        </div>
                     </li>
                 ))}
             </ul>
@@ -171,10 +213,7 @@ const TaskManager: React.FC = () => {
                     className="absolute top-0 left-0 w-full h-full bg-gray-600 bg-opacity-50 flex items-center justify-center"
                     onClick={handleOutsideClick}
                 >
-                    <div
-                        ref={formRef}
-                        className="bg-white p-4 shadow-lg rounded-md w-full max-w-md"
-                    >
+                    <div ref={formRef} className="bg-white p-4 shadow-lg rounded-md w-full max-w-md">
                         <h2 className="text-xl font-bold mb-2">
                             {selectedTask ? "Edit Task" : "New Task"}
                         </h2>
@@ -212,10 +251,7 @@ const TaskManager: React.FC = () => {
                             <Button onClick={handleSubmit}>
                                 {selectedTask ? "Update" : "Create"}
                             </Button>
-                            <Button
-                                variant="secondary"
-                                onClick={() => setShowForm(false)}
-                            >
+                            <Button variant="secondary" onClick={() => setShowForm(false)}>
                                 Cancel
                             </Button>
                         </div>
