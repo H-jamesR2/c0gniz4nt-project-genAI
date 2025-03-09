@@ -39,6 +39,7 @@ REPORT:
 
 4. Evaluation Results
     - Sentiment Accuracy: The model achieved a sentiment accuracy of 0.9425 on the test dataset.
+    - Sentiment Loss: The model achieved a sentiment loss of 0.24947042763233185 on the test dataset.
     - Analysis: The model performs well, showing consistent accuracy. However, there is room for improvement in handling reviews with more subtle language or mixed sentiments.
 
 5. Future Improvements
