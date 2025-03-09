@@ -34,7 +34,7 @@ REPORT:
     - Weight decay: 0.01
     - Optimizer: AdamW
     #### Training Procedure:
-    - The model was fine-tuned using the Kaggle Amazon review dataset.
+    - The model was fine-tuned using the pre-processed Kaggle Amazon review dataset.
     - Sentiment labels were pre-processed and mapped to 0 (negative) and 1 (positive).
 
 4. Evaluation Results
