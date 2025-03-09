@@ -7,11 +7,35 @@
 [] Capstone Project (8hrs)
 
 
+generative-ai-with-azure-machine-learning:
+[x] Assignment: Exploring NLP in Cloud
+[x] Project: Implement Cloud with Transformers
+[ ] Assignment: Model Catalog in AzureAI
+[ ] Project: Building an AI Solution
+[ ] Assignment: Cloud-Based Fine-Tuning
+[ ] Project: Deploying a Pre-Trained Model on Azure
+[ ] Assignment: Structure of Prompt Flow
+[ ] Project: LLM Application with Prompt Flow
 
 
 
 
 
 ======
-Q & A Sessions
-[]
+Capstone notes:
+    cd study_planner/backend
+    uvicorn app.main:app --reload
+    
+    uvicorn main:app --reload
+
+
+================
+docker system prune -a --volumes -f                                                           
+docker system df
+
+cd study_planner/backend
+
+docker build -t study_planner-app .
+docker run -p 8000:8000 study_planner-app
+
+docker-compose up --build
