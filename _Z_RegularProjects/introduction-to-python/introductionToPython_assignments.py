@@ -303,3 +303,76 @@ elif program_choice == 4:
     print(f"The factorial of {factorial_n} is {factorial_memoization(factorial_n)}")
     print(f"The {format_ordinal(fibonacci_n)} Fibonacci number is {fibonacci_memoization(fibonacci_n)}.")
 
+elif program_choice == 5:
+    print("TASK 1:")
+    # Ask the user to enter a number
+    try:
+        user_input = input("Enter a number: ")
+        number = float(user_input)  # Try to convert input to a float
+
+        # Try to divide 100 by the number
+        result = 100 / number
+        print(f"100 divided by {number} is {result}")
+
+    # Handle ZeroDivisionError
+    except ZeroDivisionError:
+        print("Oops! You cannot divide by zero.")
+
+    # Handle ValueError for non-numeric input
+    except ValueError:
+        print("Invalid input! Please enter a valid number.")
+
+    print("\nTASK 2:")
+    # Example of handling IndexError
+    try:
+        my_list = [1, 2, 3]
+        # Trying to access an invalid index (index 5 does not exist in the list)
+        print(my_list[5])
+    except IndexError:
+        print("IndexError occurred! List index out of range.")
+
+    # Example of handling KeyError
+    try:
+        my_dict = {"name": "Alice", "age": 25}
+        # Trying to access a non-existent key "address"
+        print(my_dict["address"])
+    except KeyError:
+        print("KeyError occurred! Key not found in the dictionary.")
+
+    # Example of handling TypeError
+    try:
+        num = 10
+        text = "Hello"
+        # Trying to add an integer and a string, which raises a TypeError
+        print(num + text)
+    except TypeError:
+        print("TypeError occurred! Unsupported operand types.")
+
+    print("\nTASK 3:")
+    # Prompt the user to enter two numbers
+    try:
+        num1 = float(input("Enter the first number: "))
+        num2 = float(input("Enter the second number: "))
+        
+        # Try to divide the first number by the second number
+        result = num1 / num2
+
+    except ZeroDivisionError:
+        # Handle the case when the second number is zero
+        print("Error! You cannot divide by zero.")
+    except ValueError:
+        # Handle invalid input if the user enters non-numeric values
+        print("Error! Please enter valid numbers.")
+
+    else:
+        # This block is executed if no exception occurs
+        print(f"The result is {result}.")
+
+    finally:
+        # This block always executes, regardless of whether an exception occurs or not
+        print("This block always executes.")
+
+else:
+    print("Invalid Choice!")
+
+print("\nprogram_end")
