@@ -75,3 +75,54 @@ elif program_choice == 1:
     factorial_result = factorial_memo[factorial_n]
     print(f"The factorial of {factorial_n} is {factorial_result}")
 
+elif program_choice == 2:
+    print("TASK 1:")
+    taskOne_string = "Python is amazing!"
+
+    # Extract the first 6 characters (Python)
+    first_word = taskOne_string[:6]
+
+    # Extract the word "amazing"
+    amazing_part = taskOne_string[11:18]
+
+    # Extract the entire string in reverse order
+    reversed_string = taskOne_string[::-1]
+
+    # Print the slices with clear labels
+    print("First word:", first_word)
+    print("Amazing part:", amazing_part)
+    print("Reversed string:", reversed_string)
+
+    print("\nTASK 2:")
+    taskTwo_string = " hello, python world! "
+
+    # Use the strip() method to remove extra spaces
+    stripped_string = taskTwo_string.strip()
+
+    # Use the capitalize() method to capitalize the first letter
+    capitalized_string = taskTwo_string.capitalize()
+
+    # Use the replace() method to replace "world" with "universe"
+    replaced_string = taskTwo_string.replace("world", "universe")
+
+    # Use the upper() method to convert the string to uppercase
+    uppercase_string = taskTwo_string.upper()
+
+    # Print the results
+    print("Stripped string:", stripped_string)
+    print("Capitalized string:", capitalized_string)
+    print("Replaced string:", replaced_string)
+    print("Uppercase string:", uppercase_string)
+
+    print("\nTASK 3:")
+    pali_word = input("Enter a word: ")
+
+    # Use slicing to reverse the string
+    reversed_word = pali_word[::-1]
+
+    # Compare the original word with the reversed word
+    if pali_word == reversed_word:
+        print(f"Yes, '{pali_word}' is a palindrome!")
+    else:
+        print(f"No, '{pali_word}' is not a palindrome.")
+
