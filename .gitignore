@@ -175,3 +175,7 @@ cython_debug/
 
 **/.vscode
 **/error_log**
+**/z_misc_notes**
+**/processed**
+**/**.zip
+study_planner_data.json
