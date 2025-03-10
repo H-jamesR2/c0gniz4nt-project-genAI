@@ -249,7 +249,7 @@ elif program_choice == 4:
         if n <= 1:
             return n
 
-        memo[n] = fibonacci(n - 1, memo) + fibonacci(n - 2, memo)
+        memo[n] = fibonacci_memoization(n - 1, memo) + fibonacci_memoization(n - 2, memo)
         return memo[n]
 
     import turtle

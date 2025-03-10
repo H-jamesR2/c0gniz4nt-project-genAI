@@ -183,3 +183,123 @@ elif program_choice == 3:
     # Print the length of the tuple
     print("Length of tuple:", len(favorite_things))
 
+elif program_choice == 4:
+    print("TASK 1:")
+
+    def greet_user(name):
+        print(f"Hello, {name}! Welcome aboard.")
+
+    def add_numbers(num1, num2):
+        return num1 + num2
+
+    # Example usage
+    user_name = "Alice"
+    greet_user(user_name)
+
+    # Add two numbers and display the result
+    num1, num2 = 5, 10
+    sum_result = add_numbers(num1, num2)
+    print(f"The sum of {num1} and {num2} is {sum_result}.")
+
+    print("\nTASK 2:")
+    def describe_pet(pet_name, animal_type="dog"):
+        print(f"I have a {animal_type} named {pet_name}.")
+
+    # Example usage
+    describe_pet("Buddy")  # Using the default animal type "dog"
+    describe_pet("Whiskers", "cat")  # Specifying "cat" as the animal type
+
+    print("\nTASK 3:")
+    # make_sandwich function uses variable arguments
+    def make_sandwich(*ingredients):
+        print("Making a sandwich with the following ingredients:")
+        for ingredient in ingredients:
+            print(f"- {ingredient}")
+
+    # Example usage
+    make_sandwich("Lettuce", "Tomato", "Cheese", "Bacon")
+
+    print("\nTASK 4:")
+    # factorial made more efficient w/ slight caching.
+    def factorial_memoization(n, memo={}):
+        if n in memo:
+            return memo[n]
+        if n == 0:
+            return 1
+        memo[n] = n * factorial_memoization(n - 1, memo)
+        return memo[n]
+
+    def fibonacci_memoization(n, memo={}):
+        """
+        Calculates the nth Fibonacci number using recursion and memoization.
+
+        Args:
+            n: The index of the Fibonacci number to calculate (non-negative integer).
+            memo: A dictionary to store previously calculated Fibonacci numbers.
+
+        Returns:
+            The nth Fibonacci number.
+        """
+        if not isinstance(n, int):
+            print("Error: Input must be an integer.")
+            return None
+
+        if n < 0:
+            print("Error: Input must be a non-negative integer.")
+            return None
+
+        if n in memo:
+            return memo[n]
+
+        if n <= 1:
+            return n
+
+        memo[n] = fibonacci_memoization(n - 1, memo) + fibonacci_memoization(n - 2, memo)
+        return memo[n]
+
+    ## fixing ordinal numbers.
+    def ordinal_suffix(number):
+        """
+        Returns the ordinal suffix (st, nd, rd, th) for a given integer.
+
+        Args:
+            number: The integer for which to determine the suffix.
+
+        Returns:
+            The ordinal suffix as a string.
+        """
+        if not isinstance(number, int):
+            return ""  # Return empty string for non-integer inputs
+
+        if 10 <= number % 100 <= 20:  # Handle teens (11th, 12th, ..., 20th)
+            return "th"
+
+        remainder = number % 10
+        if remainder == 1:
+            return "st"
+        elif remainder == 2:
+            return "nd"
+        elif remainder == 3:
+            return "rd"
+        else:
+            return "th"
+
+    def format_ordinal(number):
+        """
+        Formats an integer with its ordinal suffix.
+
+        Args:
+            number: The integer to format.
+
+        Returns:
+            The formatted ordinal string (e.g., "1st", "2nd", "3rd").
+        """
+        return str(number) + ordinal_suffix(number)
+
+    factorial_n = int(input("Enter a number to find factorial: "))
+    fibonacci_n = int(input("Enter a number to find the fibonacci number: "))
+
+
+    print(f"The factorial of {factorial_n} is {factorial_memoization(factorial_n)}")
+    print(f"The {format_ordinal(fibonacci_n)} Fibonacci number is {fibonacci_memoization(fibonacci_n)}.")
+
