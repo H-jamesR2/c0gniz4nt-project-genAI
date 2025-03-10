@@ -126,3 +126,60 @@ elif program_choice == 2:
     else:
         print(f"No, '{pali_word}' is not a palindrome.")
 
+elif program_choice == 3:
+    print("TASK 1:")
+    fruits = ['apple', 'banana', 'blueberry', 'pineapple', 'orange']
+
+    # Print the original list
+    print("Original list:", fruits)
+
+    # Append a new fruit to the list
+    fruits.append('fig')
+    print("After adding a fruit:", fruits)
+
+    # Remove one fruit from the list using the remove() method
+    fruits.remove('blueberry')
+    print("After removing a fruit:", fruits)
+
+    # Print the list in reverse order using slicing
+    reversed_fruits = fruits[::-1]
+    print("Reversed list:", reversed_fruits)
+    
+    print("\nTASK 2:")
+    # Create a dictionary with personal information
+    personal_info = {
+        "name": "Alice",
+        "age": 21,
+        "city": "New York"
+    }
+
+    # Add a new key-value pair for "favorite color"
+    personal_info["favorite color"] = "Green"
+    personal_info["occupation"] = "Political Scientist"
+
+    # Update the "city" key with a new value
+    personal_info["city"] = "Washington"
+    personal_info["name"] = "Eleanor"
+
+    personal_info["age"] = -1
+
+    # Print all the keys and values using a loop
+    print("Keys:", ", ".join(personal_info.keys()))
+    print("Values:", ", ".join(map(str, personal_info.values())))
+
+    print("\nTASK 3:")
+    # Create a tuple with three elements: favorite movie, song, and book
+    favorite_things = ('Inception', 'ABCD - Nayeon', 'Why Nations Fail')
+
+    # Print the tuple
+    print("Favorite things:", favorite_things)
+
+    # Try to change one of the elements (this will raise an error)
+    try:
+        favorite_things[0] = 'The Matrix'  # Attempting to change the movie
+    except TypeError:
+        print("Oops! Tuples cannot be changed.")
+
+    # Print the length of the tuple
+    print("Length of tuple:", len(favorite_things))
+
