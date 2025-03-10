@@ -47,5 +47,31 @@ elif program_choice == 0:
     else:
         print("Zero it is. A perfect balance!")
     
+elif program_choice == 1:
+    print("TASK 1:")
+    loop_num = int(input("Enter a starting number greater than 1: "))
+    if loop_num < 1:
+        print("Number is less than 1...")
+    print('\n')
+    while(loop_num > 0):
+        print(loop_num)
+        loop_num -= 1
+    print("Blast off! 🚀")
 
+    print("\nTASK 2:")
+    mul_table_num = int(input("Enter a number: "))
+    for i in range(1, 11, 1):
+        mul_table_res = mul_table_num * i
+        print(f"{mul_table_num} * {i} = {mul_table_res}")
+        print("\n")
+
+    print("\nTASK 3:")
+    factorial_n = int(input("Enter a number: "))  
+    factorial_memo = {0: 1}  # Base case for factorial(0)
+
+    for i in range(1, factorial_n + 1):
+        factorial_memo[i] = factorial_memo[i - 1] * i
+
+    factorial_result = factorial_memo[factorial_n]
+    print(f"The factorial of {factorial_n} is {factorial_result}")
 
