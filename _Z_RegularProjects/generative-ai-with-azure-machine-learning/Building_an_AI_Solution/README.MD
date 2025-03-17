@@ -46,7 +46,7 @@ The selected model runs efficiently on Azure's infrastructure with no compatibil
 
 ### Setup sample:
 
-- <img align="center" width="60%" height="auto" src="https://github.com/H-jamesR2/c0gniz4nt-project-genAI/_Z_RegularProjects/generative-ai-with-azure-machine-learning/_recordings/build-Azure-AI-solution-record-1.gif">
+- <img align="center" width="60%" height="auto" src="https://github.com/H-jamesR2/c0gniz4nt-project-genAI/blob/main/_Z_RegularProjects/generative-ai-with-azure-machine-learning/_recordings/build-Azure-AI-solution-record-1.gif">
 
 ## Management Process
 
