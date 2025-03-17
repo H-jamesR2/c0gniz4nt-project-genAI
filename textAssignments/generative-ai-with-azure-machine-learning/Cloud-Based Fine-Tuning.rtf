@@ -1,0 +1,104 @@
+- Cloud-Based Fine-Tuning Assignment
+
+-- Part 1: Fundamentals of Fine-Tuning
+--- Concept Check (Multiple Choice Questions):
+
+What is the key benefit of fine-tuning a pre-trained model?
+A) It reduces the need for computational resources (Correct Answer)
+
+Which of the following tools optimizes model deployment in Azure?
+A) ONNX Runtime (Correct Answer)
+
+
+--- Application Task: Three Potential Tasks for Fine-Tuning
+
+---- 1. Medical Report Analysis
+- Pre-trained Model Choice: BioBERT
+- Benefits of Fine-Tuning: 
+    BioBERT is already pre-trained on biomedical literature, making it an excellent foundation for medical domain tasks. 
+    Fine-tuning allows the model to adapt to specific medical terminologies, report structures, and institutional documentation 
+    styles without losing the general medical knowledge embedded in the base model. This approach significantly reduces the amount of training data 
+    needed compared to training from scratch, which is particularly valuable in healthcare where annotated data may be limited due to privacy concerns. 
+    Fine-tuning also enables the model to understand context-specific medical abbreviations and specialized vocabulary that might differ across medical specialties.
+
+---- 2. Financial Document Classification
+- Pre-trained Model Choice: RoBERTa
+- Benefits of Fine-Tuning: 
+    RoBERTa's robust pre-training makes it ideal for financial text analysis where precision is critical. 
+    Fine-tuning this model for financial document classification allows it to recognize specialized financial terminology, 
+    regulatory language, and document structures specific to different financial instruments (prospectuses, annual reports, risk disclosures). 
+    The fine-tuning process can help the model understand nuanced differences between financial document types that might appear similar to general language models. 
+    Additionally, the model can be trained to identify critical information within financial documents while maintaining compliance with regulatory requirements, 
+    something that would be extremely data-intensive to teach from scratch.
+
+---- 3. Multilingual Customer Support Intent Recognition
+- Pre-trained Model Choice: XLM-RoBERTa
+- Benefits of Fine-Tuning: 
+    XLM-RoBERTa is pre-trained on 100 languages, providing an excellent starting point for global enterprises. 
+    Fine-tuning this model for customer support intent recognition allows a single model to identify customer intents across multiple languages with relatively small amounts of training data per language. 
+    This approach is particularly beneficial as it enables transfer learning between languages, where patterns learned in data-rich languages can benefit intent recognition in languages with fewer training examples. 
+    Fine-tuning also allows the model to adapt to company-specific terminology, product names, and support workflows that wouldn't be present in the general pre-training corpus.
+
+-- Part 2: Implementing Fine-Tuning on Azure
+--- Case Study Activity: Cost-Effective Technical Document Summarization
+    Dataset Description and Preparation:
+    For this project, I would fine-tune a compact, efficient model from Azure AI Studio's catalog to automatically generate concise summaries of technical documentation,
+    helping users quickly grasp key information without reading lengthy documents. This approach focuses on practical results with minimal training costs:
+    - Source Data Collection:
+        Leverage existing pairs of technical documents and their executive summaries from company archives
+        Use 2,000-3,000 document-summary pairs maximum (balancing quality and training costs)
+        Focus on documents of similar length and complexity to ensure consistent results
+        Include a mix of document types (user manuals, technical specifications, procedure guides) relevant to the business
+    - Data Preparation Steps:
+        Extract full documents and their corresponding human-written summaries
+        Clean and standardize formatting (remove headers, footers, page numbers)
+        Filter to include only documents with high-quality, professionally written summaries
+        Truncate very long documents to a manageable length (first 1,024 tokens) to reduce training costs
+        Ensure summaries are concise (typically 100-200 tokens) to help the model learn appropriate brevity
+    - Data Formatting:
+        Format as input/output pairs: technical document → summary
+        Split into 80% training, 20% validation (optimizing for cost efficiency)
+        Include simple instruction prefixes like "Summarize the following technical document:"
+        Apply basic text cleaning without computationally expensive preprocessing
+        Structure the data according to Azure's fine-tuning templates
+    - Cost-Saving Strategies:
+        Begin with a pilot test using 500 examples to validate the approach
+        Use T5-small or BART-base models instead of larger variants
+        Configure low-cost compute options in Azure
+        Limit the maximum number of training epochs (3-5) to prevent overfitting and control costs
+        Focus fine-tuning on only the final layers of the model to reduce computational requirements
+
+
+
+Performance Evaluation Reflection (200 words)
+After fine-tuning my document summarization model, I would evaluate its performance using practical metrics that balance quality assessment with cost considerations.
+
+I would primarily rely on ROUGE scores (particularly ROUGE-1, ROUGE-2, and ROUGE-L) to measure overlap between generated summaries and human references. 
+These metrics efficiently assess content coverage and conciseness without requiring expensive human evaluation for every summary. For a more semantic understanding of quality, 
+I would calculate BERTScore on a smaller subset of examples, providing insight into meaning preservation while managing computational costs.
+
+Beyond automated metrics, I would conduct limited human evaluation on approximately 50-100 randomly selected summaries, focusing on practical aspects: factual correctness, inclusion of key information, and usefulness to the target audience. 
+This targeted approach provides crucial qualitative insights without the expense of comprehensive human review.
+
+The main challenges I anticipate include handling highly technical terminology consistently and generating appropriately concise summaries for documents of varying lengths. 
+To address these challenges cost-effectively, I would implement post-processing rules to handle technical terms and adjust summary length expectations based on input document size.
+
+This evaluation approach provides sufficient confidence in model quality while maintaining budget discipline. 
+Rather than pursuing marginal improvements through expensive optimization, I would focus on confirming the model meets practical business needs: 
+reducing document review time by 70-80% while accurately capturing key information for technical teams.
+
+-- Part 3: Evaluating and Deploying Models
+
+--- Reflection Activity: Importance of Evaluation Metrics (200 words)
+
+Thorough evaluation of fine-tuned models using metrics like F1-Score and cross-validation is not merely a technical step but a critical safeguard ensuring model reliability and trustworthiness in production environments. 
+F1-Score's balanced consideration of precision and recall is particularly valuable for applications where both false positives and false negatives carry significant consequences—such as in medical diagnosis assistance, 
+where missing a condition (false negative) or incorrectly flagging a healthy patient (false positive) can both lead to harmful outcomes.
+
+Cross-validation's systematic approach to testing model performance across different data subsets reveals potentially dangerous blindspots and biases that might remain hidden with simpler evaluation methods. 
+This is especially crucial when fine-tuning foundation models, as their impressive overall performance can mask serious weaknesses in specific scenarios or with particular population subgroups.
+
+Poor evaluation practices can lead to catastrophic outcomes in production. 
+For instance, a sentiment analysis model deployed without proper evaluation might perform well on general text but systematically misclassify culturally-specific expressions of dissatisfaction, 
+leading to missed customer service opportunities. Similarly, a document classification model might achieve high overall accuracy while completely failing on certain document types, 
+resulting in critical information being incorrectly routed or ignored. These pitfalls emphasize why rigorous, multi-faceted evaluation isn't optional but essential for responsible AI deployment.
