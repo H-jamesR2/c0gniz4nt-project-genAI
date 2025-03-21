@@ -1,0 +1,84 @@
+Date: 2/05/2025
+• What is Generative AI?
+    - AI that creates new content (text, images, audio, video).
+    - Examples: ChatGPT, Stable Diffusion, DALL-E.
+• Why Generative AI Matters:
+    - Enhances creativity and automates tasks.
+    - Powers innovations in multiple domains.
+• Key Technologies:
+    - Neural networks: GANs, Transformers.
+    - Libraries: TensorFlow, PyTorch, Hugging Face.
+
+• Text Generation: Content creation (blogs, summaries).
+• Image Generation: Digital art, marketing visuals.
+• Code Generation: Automating code writing.
+• Chatbots: Virtual assistants for customer support.
+
+
+Use Case 1: Text Generation
+    • Application: Automating content creation (e.g., blog posts).
+    • Python Example:
+        from transformers import pipeline
+        generator = pipeline('text-generation', model='gpt-3.5-turbo')
+        result = generator('Explain the future of generative AI in business',
+        max_length=100)
+        print(result[0]['generated_text'])
+    • Output Example: "Generative AI is transforming industries by enabling
+    automation and innovation..."
+
+Use Case 2: Image Generation
+    • Application: Creating digital art or prototypes.
+    • Python Example:
+        from diffusers import StableDiffusionPipeline
+        pipeline = StableDiffusionPipeline.from_pretrained('runwayml/stable-
+        diffusion-v1-5')
+        pipeline.to('cuda')
+        image = pipeline('A futuristic cityscape at sunset').images[0]
+        image.save('output.png')
+    • Output Example: A futuristic cityscape.
+
+Use Case 3: Code Generation
+• Application: Automating code writing and debugging.
+• Python Example:
+    import openai
+    openai.api_key = 'your_api_key'
+    prompt = 'Write a Python function to calculate the factorial of a number.'
+    response = openai.Completion.create(engine='code-davinci-002',
+    prompt=prompt, max_tokens=50)
+    print(response['choices'][0]['text'])
+
+
+Key Python Libraries for Generative AI
+    • PyTorch/TensorFlow: Model training and deployment.
+    • Hugging Face Transformers: Pretrained models for NLP tasks.
+    • Diffusers: Image generation with diffusion models.
+    • Gradio/Streamlit: User-friendly app interfaces.
+    • OpenAI API: GPT-based models.
+
+Case Studies: 
+- Automating Product Descriptions:
+    • Problem Statement: E-commerce site wants SEO-friendly product descriptions.
+    • Solution: Use GPT-based text generation.
+    • Step 1: Prepare product metadata (name, features).
+    • Step 2: Generate descriptions with Python.
+    • Python Code:
+    from transformers import pipeline
+    generator = pipeline('text-generation', model='gpt-3.5-turbo')
+    product_data = {
+    'name': 'Wireless Bluetooth Headphones',
+    'features': ['Noise-cancelling', 'Long battery life', 'Comfortable fit']
+    }
+    prompt = f"Write a product description for {product_data['name']} with features: {',
+    '.join(product_data['features'])}."
+    result = generator(prompt, max_length=100)
+    print(result[0]['generated_text'])
+
+
+    Results and Benefits of the Case Study
+    • Results:
+        - Faster content generation.
+        - Consistent and creative outputs.
+        - Improved SEO rankings.
+    • Benefits:
+        - Saves time and resources.
+        - Enhances customer experience.
