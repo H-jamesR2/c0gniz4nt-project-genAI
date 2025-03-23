@@ -179,3 +179,5 @@ cython_debug/
 **/processed**
 **/**.zip
 study_planner_data.json
+
+**/.DS_Store
